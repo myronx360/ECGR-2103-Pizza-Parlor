@@ -208,15 +208,18 @@ int main() {
                 case 1:
                     cout << "You have added _____ to your order. Would you like to add more toppings (Y = Yes N = N)" << endl;
                     listOfToppings+= "Cheese\t$NC\n";
+                    cheeseQuantity--;
                     break;
                 case 2:
                     cout << "You have added _____ to your order. Would you like to add more toppings (Y = Yes N = N)" << endl;
                     listOfToppings+= "Pepperoni\t$NC\n";
+                    pepperoniQuantity--;
                     break;
                 case 3:
                     cout << "You have added _____ to your order. Would you like to add more toppings (Y = Yes N = N)" << endl;
                     listOfToppings+= "Mushroom\t$1.00\n";
                     orderTotal+=1.00;
+                    mushroomQuantity--;
                     break;
                 case 4:
                     cout << "You have added _____ to your order. Would you like to add more toppings (Y = Yes N = N)" << endl;
@@ -328,5 +331,12 @@ int main() {
     } 
     
     void showQOHTotals(){
+        cout << "My new QOH totals are as follows: \n\n";
+        cout << "Topping QOH:\n";
+        cout << "Cheese\t" << cheeseQuantity;
         
+        cout << "Crust QOH:\n";
+        cout << "Thin\t" << thinCrustQuantity;
+        cout << "Flatbread\t" << flatbreadQuantity;
+        cout << "Thick\t" <<thinckCrustQuantity;
     }
