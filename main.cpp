@@ -50,41 +50,58 @@ const double LARGE_PRICE = 14.00;
 const double EXTRA_LARGE_PRICE = 14.00;
 const double NY_STYLE_PRICE = 16.00;
 
-double total = 0.00;
+double orderTotal = 0.00;
+double totalRevenue = 0.00;
 
 
 
 void showMenu();
 
-int addPizza(string &pizzaName);
+int addPizza(string &pizzaName, int &pizzaPrice);
 string addCrust();
 string addToppings();
 int addGuests(int servingSize, string pizzaName);
 
-void showTotal(string pizzaName, string crust, string toppings, int numberOfGuests);
-void showItemizedTotal();
+void showTotal(string pizzaName, string crust, string toppings, int numberOfGuests, int pizzaPrice);
+void showItemizedTotal(string pizzaName, string crust, string toppings, int pizzaPrice);
 void showQOHTotals();
 
 int main() {
     string pizzaName = " ";
+    int pizzaPrice = 0;
     int pizzaChoice = 0;
     string crust;
     string toppings;
     int numberOfGuests = 0;
-    for(int i = 0;i < 4;i++){
+    char orderMore;
+    for(int i = 1;i <= 4;i++){
                 
-        pizzaChoice = addPizza(pizzaName);
+        pizzaChoice = addPizza(pizzaName, pizzaPrice);
         crust = addCrust();
         toppings = addToppings();
         numberOfGuests = addGuests(pizzaChoice, pizzaName);
-        showTotal(pizzaName, crust, toppings, numberOfGuests);
+        showTotal(pizzaName, crust, toppings, numberOfGuests, pizzaPrice);
         
-        total = 0;
+        cout << "Would you like to order another pizza? You have "<< 
+                (4-i) <<" Pizzas remaining" << endl << "(Y = Yes N = No)\n";
+        
+        cin >> orderMore;
+        
+        totalRevenue+=orderTotal;
+        
+        if(orderMore == 'n'){
+            cout << "Thank you for eating at the Pizza Parlor! Please come again soon!\n";
+            cout << "My total revenue for the night was $" << totalRevenue;
+            showQOHTotals();
+            break;
+        }
+        
+        orderTotal = 0;
     }
     return 0;
 }
 
-    int addPizza(string &pizzaName){
+    int addPizza(string &pizzaName, int &pizzaPrice){
         int pizzaChoice = 0;
         
         cout << "Welcome to Pizza Parlor, please enter a number from 1 to 6 to indicate the size pizza you want";
@@ -95,42 +112,49 @@ int main() {
         switch(pizzaChoice){
             case 1: 
                 pizzaName = "personal pan";
-                total+=PERSONAL_PAN_PRICE;
+                pizzaPrice = PERSONAL_PAN_PRICE;
+                orderTotal+=PERSONAL_PAN_PRICE;
                 cout << "You have chosen to order a  Personal Pan pizza. This will feed " 
                 << PERSONAL_PAN_SIZE <<" people";
                 break;
             case 2: 
                 pizzaName = "small";
-                total+=SMALL_PRICE;
+                pizzaPrice = SMALL_PRICE;
+                orderTotal+=SMALL_PRICE;
                 cout << "You have chosen to order a smMll pizza. This will feed " 
                 << SMALL_SIZE <<" people";
                 break;
             case 3: 
                 pizzaName = "medium";
-                total+=MEDIUM_PRICE;
+                pizzaPrice = MEDIUM_PRICE;
+                orderTotal+=MEDIUM_PRICE;
                 cout << "You have chosen to order a ______. This will feed " 
                 << MEDIUM_SIZE <<" people";
                 break;
             case 4: 
                 pizzaName = "";
-                total+=LARGE_PRICE;
+                pizzaPrice = LARGE_PRICE;
+                orderTotal+=LARGE_PRICE;
                 cout << "You have chosen to order a _______. This will feed " 
                 << LARGE_SIZE <<" people";
                 break;
             case 5: 
                 pizzaName = "";
-                total+=EXTRA_LARGE_PRICE;
+                pizzaPrice = EXTRA_LARGE_PRICE;
+                orderTotal+=EXTRA_LARGE_PRICE;
                 cout << "You have chosen to order a _______. This will feed " 
                 << EXTRA_LARGE_SIZE <<" people";
                 break;
             case 6: 
                 pizzaName = "";
-                total+=NY_STYLE_PRICE;
+                pizzaPrice = NY_STYLE_PRICE;
+                orderTotal+=NY_STYLE_PRICE;
                 cout << "You have chosen to order a ______. This will feed " 
                 << NY_STYLE_SIZE <<" people";
                 break;
             default:
                 pizzaName = "NONE";
+                pizzaPrice = 0;
                 cout << "No pizza.....OK" << endl;
                // addPizza(" ");
         }
@@ -157,7 +181,7 @@ int main() {
             case 3:
                 cout << "You have chosen ______  as your crust" << endl;
                 crustName = "Thick Crust";
-                total+= 2.00;
+                orderTotal+= 2.00;
                 break;
             default:
                 cout << "No crust.....OK" << endl;
@@ -183,21 +207,21 @@ int main() {
             switch(toppings){
                 case 1:
                     cout << "You have added _____ to your order. Would you like to add more toppings (Y = Yes N = N)" << endl;
-                    listOfToppings+= "Cheese";
+                    listOfToppings+= "Cheese\t$NC\n";
                     break;
                 case 2:
                     cout << "You have added _____ to your order. Would you like to add more toppings (Y = Yes N = N)" << endl;
-                    listOfToppings+= "Pepperoni";
+                    listOfToppings+= "Pepperoni\t$NC\n";
                     break;
                 case 3:
                     cout << "You have added _____ to your order. Would you like to add more toppings (Y = Yes N = N)" << endl;
-                    listOfToppings+= "Mushroom";
-                    total+=1.00;
+                    listOfToppings+= "Mushroom\t$1.00\n";
+                    orderTotal+=1.00;
                     break;
                 case 4:
                     cout << "You have added _____ to your order. Would you like to add more toppings (Y = Yes N = N)" << endl;
-                    listOfToppings+= "Onions";
-                    total+=1.00;
+                    listOfToppings+= "Onions\t$1.00\n";
+                    orderTotal+=1.00;
                     break;
                 case 5:
                     cout << "You have added _____ to your order. Would you like to add more toppings (Y = Yes N = N)" << endl;
@@ -210,7 +234,7 @@ int main() {
                 case 7:
                     cout << "You have added _____ to your order. Would you like to add more toppings (Y = Yes N = N)" << endl;
                     listOfToppings+= "";
-                    total+=1.00;
+                    orderTotal+=1.00;
                     break;
                 case 8:
                     cout << "You have added _____ to your order. Would you like to add more toppings (Y = Yes N = N)" << endl;
@@ -223,7 +247,7 @@ int main() {
                 case 10:
                     cout << "You have added _____ to your order. Would you like to add more toppings (Y = Yes N = N)" << endl;
                     listOfToppings+= "";
-                    total+=1.00;
+                    orderTotal+=1.00;
                     break;
 
                 default:
@@ -279,16 +303,30 @@ int main() {
         return guests;
     }
     
-    void showTotal(string pizzaName, string crust, string toppings, int numberOfGuests){
+    void showTotal(string pizzaName, string crust, string toppings, int numberOfGuests, int pizzaPrice){
         char showItems;
-        cout << "Great your total for today’s order at the Pizza Parlor was $" << total << endl;
+        cout << "Great your total for today’s order at the Pizza Parlor was $" << orderTotal << endl;
         cout << "Would you like an itemized list of your order? (Y = Yes N = No)" << endl;
         cin >> showItems;
         
         if(showItems == 'y'){
-            //showItemizedTotal();
+            showItemizedTotal(pizzaName, crust, toppings, pizzaPrice);
         }
         
          cout << "The total cost for each of your " <<  numberOfGuests << "guests will be "
-                 << "$"<< (total / numberOfGuests);           
+                 << "$"<< (orderTotal / numberOfGuests) << endl;
+         
+         
+    }
+
+    void showItemizedTotal(string pizzaName, string crust, string toppings, int pizzaPrice){
+        cout << "Great your itemized total for your order was as follows:" << endl;
+        
+        cout << pizzaName << "\t"<<"$"<< pizzaPrice << endl;
+        cout << toppings;
+        cout << "Total Cost\t $" << orderTotal;
+    } 
+    
+    void showQOHTotals(){
+        
     }
