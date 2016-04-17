@@ -5,16 +5,18 @@
  */
 
 /*
- * File:   main.cpp
+ * File:   Pizza Parlor.cpp
  * Pizza Parlor
  * Author: mxw13
  *
  * Created on April 8, 2016, 5:34 PM
  */
 
+#include <iostream>
+
 #include <cstdlib>
 #include <string>
-#include <iostream>
+#include <iomanip>
 
 using namespace std;
 
@@ -102,7 +104,7 @@ int main() {
 // calculates the overall total revenue of the day's order 
         totalRevenue+=orderTotal;
         
-    // if the user doesn’t order more show the total revenue and quantity on hand totals
+    // if the user doesn't order more show the total revenue and quantity on hand totals
         if(orderMore == 'n'){
             cout << "Thank you for eating at the Pizza Parlor! Please come again soon!\n";
             cout << "My total revenue for the night was $" << totalRevenue;
@@ -133,48 +135,48 @@ break;
                 pizzaPrice = PERSONAL_PAN_PRICE;
                 orderTotal+=PERSONAL_PAN_PRICE;
                 cout << "You have chosen to order a  Personal Pan pizza. This will feed "
-                << PERSONAL_PAN_SIZE <<" people";
+                << PERSONAL_PAN_SIZE <<" people\n";
                 break;
             case 2:
                 pizzaName = "small";
                 pizzaPrice = SMALL_PRICE;
                 orderTotal+=SMALL_PRICE;
                 cout << "You have chosen to order a small pizza. This will feed "
-                << SMALL_SIZE <<" people";
+                << SMALL_SIZE <<" people\n";
                 break;
             case 3:
                 pizzaName = "medium";
                 pizzaPrice = MEDIUM_PRICE;
                 orderTotal+=MEDIUM_PRICE;
                 cout << "You have chosen to order a medium. This will feed "
-                << MEDIUM_SIZE <<" people";
+                << MEDIUM_SIZE <<" people\n";
                 break;
             case 4:
                 pizzaName = "large";
                 pizzaPrice = LARGE_PRICE;
                 orderTotal+=LARGE_PRICE;
                 cout << "You have chosen to order a large. This will feed "
-                << LARGE_SIZE <<" people";
+                << LARGE_SIZE <<" people\n";
                 break;
             case 5:
                 pizzaName = "extra large";
                 pizzaPrice = EXTRA_LARGE_PRICE;
                 orderTotal+=EXTRA_LARGE_PRICE;
                 cout << "You have chosen to order a extra large. This will feed "
-                << EXTRA_LARGE_SIZE <<" people";
+                << EXTRA_LARGE_SIZE <<" people\n";
                 break;
             case 6:
                 pizzaName = "NY style";
                 pizzaPrice = NY_STYLE_PRICE;
                 orderTotal+=NY_STYLE_PRICE;
                 cout << "You have chosen to order a NY style. This will feed "
-                << NY_STYLE_SIZE <<" people";
+                << NY_STYLE_SIZE <<" people\n";
                 break;
             default:
                 pizzaName = "NONE";
                 pizzaPrice = 0;
-                cout << "No pizza.....OK" << endl;
-               // addPizza(" ");
+                cout << "Error:" << endl;
+                addPizza(pizzaName, pizzaPrice);
         }
         return pizzaChoice;
     }
@@ -208,7 +210,7 @@ cin >> crust;
                 crustQuantityArray[2]--;
                 break;
             default:
-                cout << "No crust.....OK" << endl;
+                cout << "Error:" << endl;
                 crustName = "";
                 addCrust();
         }
@@ -255,36 +257,43 @@ cin >> crust;
                     cout << "You have added onions to your order. Would you like to add more toppings (Y = Yes N = N)" << endl;
                     listOfToppings+= "Onions\t$1.00\n";
                     orderTotal+=1.00;
+                    onionsQuantity--;
                     break;
                 case 5:
                     cout << "You have added sausage to your order. Would you like to add more toppings (Y = Yes N = N)" << endl;
                     listOfToppings+= "Sausage\t$NC\n";
+                    sausageQuantity--;
                     break;
                 case 6:
                     cout << "You have added hamburger to your order. Would you like to add more toppings (Y = Yes N = N)" << endl;
                     listOfToppings+= "Hamburger\t$NC\n";
+                    hamburgerQuantity--;
                     break;
                 case 7:
-                    cout << "You have added bacon bits to your order. Would you like to add more toppings (Y = Yes N = N)" << endl;
-                    listOfToppings+= "Bacon Bits\t$NC\n";
+cout << "You have added bacon bits to your order. Would you like to add more toppings (Y = Yes N = N)" << endl;
+                    listOfToppings+= "Bacon Bits\t$1.00\n";
                     orderTotal+=1.00;
+                    baconBitsQuantity--;
                     break;
                 case 8:
                     cout << "You have added black olives to your order. Would you like to add more toppings (Y = Yes N = N)" << endl;
                     listOfToppings+= "Black Olives\t$NC\n";
+                    blackOlivesQuantity--;
                     break;
                 case 9:
                     cout << "You have added green peppers to your order. Would you like to add more toppings (Y = Yes N = N)" << endl;
                     listOfToppings+= "Green Peppers\t$NC\n";
+                    greenPeppersQuantity--;
                     break;
                 case 10:
                     cout << "You have added pineapple to your order. Would you like to add more toppings (Y = Yes N = N)" << endl;
-                    listOfToppings+= "Pineapple\t$NC\n";
+                    listOfToppings+= "Pineapple\t$1.00\n";
                     orderTotal+=1.00;
+                    pineappleQuantity--;
                     break;
 
                 default:
-                    cout << "Wrong!!!!!!!!!!!!!!!!!!!!!!" << endl;
+                    cout << "Error:" << endl;
                     addToppings();
             }
             
@@ -354,8 +363,8 @@ cin >> showItems;
         }
     
         // output the price that each guest should play
-         cout << "The total cost for each of your " <<  numberOfGuests << "guests will be "
-                 << "$"<< (orderTotal / numberOfGuests) << endl;
+         cout << "The total cost for each of your " <<  numberOfGuests << " guests will be "
+                 << "$"<< fixed << setprecision(2) << showpoint << (orderTotal / numberOfGuests) << endl;
          
          
     }
@@ -365,30 +374,35 @@ cin >> showItems;
         cout << "Great your itemized total for your order was as follows:" << endl;
         // output the name and price of the pizza that was passed through parameter(by value) 
         cout << pizzaName << "\t"<<"$"<< pizzaPrice << endl;
+        // output the name and price of the crust
+        if (crust == "Thick Crust")
+            cout << crust << "\t$2.00\n";
+        else
+            cout << crust << "\t$NC\n";
     // output the list of toppings
-        cout << toppings;
+        cout << toppings << endl;
     // output the current order total
-        cout << "Total Cost\t $" << orderTotal;
+        cout << "Total Cost\t $" << orderTotal << endl;
     }
         
     // outputs the quantity on hand totals
     void showQOHTotals(){
         cout << "My new QOH totals are as follows: \n\n";
-        cout << "Topping QOH:\n";
-        cout << "Cheese\t" << cheeseQuantity<< endl;
+        cout << "Topping QOH:\n\n";
+        cout << "Cheese\t\t" << cheeseQuantity<< endl;
         cout << "Pepperoni\t" << pepperoniQuantity<< endl;
         cout << "Mushroom\t" << mushroomQuantity<< endl;
-        cout << "Onions\t" << onionsQuantity<< endl;
-        cout << "Sausage\t" << sausageQuantity<< endl;
+        cout << "Onions\t\t" << onionsQuantity<< endl;
+        cout << "Sausage\t\t" << sausageQuantity<< endl;
         cout << "Hamburger\t" << hamburgerQuantity<< endl;
         cout << "Bacon Bits\t" << baconBitsQuantity << endl;
         cout << "Black Olives\t" << blackOlivesQuantity << endl;
         cout << "Green Peppers\t" << greenPeppersQuantity << endl;
         cout << "Pineapple\t" << pineappleQuantity<< endl;
         
-        cout << "Crust QOH:\n";
-        cout << "Thin\t" << crustQuantityArray[0]<< endl;
+        cout << "Crust QOH:\n\n";
+        cout << "Thin\t\t" << crustQuantityArray[0]<< endl;
         cout << "Flatbread\t" << crustQuantityArray[1]<< endl;
-        cout << "Thick\t" <<crustQuantityArray[2]<< endl;
+        cout << "Thick\t\t" <<crustQuantityArray[2]<< endl;
     }
 
